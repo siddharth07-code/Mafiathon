@@ -1,0 +1,2540 @@
+/* ══════════════════════════════════════════════════════════════
+   MAFIATHON — ADVERSARIAL ARENA
+   High-Fidelity Skeuomorphic Classified Dossier Design System
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── Reset & Typography ──────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+body {
+  background-color: #020101;
+  background-image: 
+    linear-gradient(rgba(1, 1, 1, 0.78), rgba(2, 1, 1, 0.88)),
+    url('/static/investigation_board_bg.jpg');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: #1e1610;
+  font-family: 'Courier Prime', 'Courier New', monospace;
+  min-height: 100vh;
+  padding: 16px 20px 80px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* Atmospheric Noir Vignette & Overhead Board Spotlight Overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: 
+    radial-gradient(ellipse 95% 85% at 50% 50%, transparent 20%, rgba(0, 0, 0, 0.94) 80%, #000000 100%),
+    radial-gradient(ellipse 55% 45% at 51% 6%, rgba(255, 185, 80, 0.11) 0%, transparent 65%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ── Multi-Source Animated Detective Lighting (Left Desk Lamp & Overhead Spotlight) ── */
+.ambient-lamp-glow {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background: 
+    /* Top Overhead Spotlight on Corkboard */
+    radial-gradient(ellipse 48% 38% at 51% 8%, rgba(255, 205, 110, 0.18) 0%, transparent 60%),
+    /* Left Angled Desk Lamp */
+    radial-gradient(circle at 9% 68%, rgba(255, 220, 140, 0.22) 0%, rgba(220, 120, 25, 0.08) 32%, transparent 55%),
+    /* Central Evidence Yarn Subtle Crimson Pulse */
+    radial-gradient(circle at 49% 38%, rgba(185, 20, 20, 0.08) 0%, transparent 42%);
+  animation: detectiveStudyLightingFlicker 9s infinite;
+}
+
+@keyframes detectiveStudyLightingFlicker {
+  0%, 100% { opacity: 0.9; filter: brightness(1); }
+  18% { opacity: 0.9; }
+  19% { opacity: 0.45; filter: brightness(0.72); } /* Micro-flicker */
+  20% { opacity: 0.98; filter: brightness(1.15); }
+  21% { opacity: 0.62; filter: brightness(0.85); }
+  22% { opacity: 0.92; filter: brightness(1.02); }
+  52% { opacity: 0.92; }
+  53% { opacity: 0.38; filter: brightness(0.68); } /* Second micro-flicker */
+  54% { opacity: 1; filter: brightness(1.2); }
+  55% { opacity: 0.88; filter: brightness(1); }
+  74% { opacity: 0.88; }
+  74.5% { opacity: 0.52; }
+  75.2% { opacity: 0.95; }
+  88% { opacity: 0.9; }
+}
+
+.ambient-dust-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0.85;
+}
+
+/* ── Distant Storm & Window Thunder Flash ─────────────────── */
+.distant-storm-flash {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at 80% 25%, rgba(180, 210, 255, 0.18) 0%, rgba(100, 150, 255, 0.06) 40%, transparent 70%);
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0;
+  animation: distantThunderFlash 16s infinite 4s;
+}
+
+@keyframes distantThunderFlash {
+  0%, 93%, 100% { opacity: 0; }
+  94% { opacity: 0.6; }
+  94.8% { opacity: 0.08; }
+  95.6% { opacity: 0.82; }
+  96.8% { opacity: 0.18; }
+  97.5% { opacity: 0.45; }
+  98.4% { opacity: 0; }
+}
+
+/* ── Atmospheric Background Forensic Blood Patches ───────── */
+.bg-blood-patches-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.blood-patch {
+  position: absolute;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  pointer-events: none;
+  filter: contrast(1.15) brightness(0.65) saturate(1.4);
+  mix-blend-mode: multiply;
+  transition: opacity 0.3s ease;
+}
+
+/* 1. Top-Right near Case Badge */
+.blood-patch.patch-1 {
+  top: 3%;
+  right: 18%;
+  width: 230px;
+  height: 240px;
+  background-image: url('/static/blood_spatter_isolated.png');
+  transform: rotate(38deg) scale(1.05);
+  opacity: 0.65;
+}
+
+/* 2. Top-Left / above Title */
+.blood-patch.patch-2 {
+  top: -15px;
+  left: 6%;
+  width: 270px;
+  height: 290px;
+  background-image: url('/static/clean_photographic_blood.png');
+  transform: rotate(-32deg) scaleX(-1);
+  opacity: 0.58;
+}
+
+/* 3. Bottom-Left Desk Corner Pool */
+.blood-patch.patch-3 {
+  bottom: 6%;
+  left: 2%;
+  width: 330px;
+  height: 350px;
+  background-image: url('/static/optical_extracted_blood.png');
+  transform: rotate(115deg) scale(1.15);
+  opacity: 0.62;
+}
+
+/* 4. Far Right Perimeter Splatter */
+.blood-patch.patch-4 {
+  top: 38%;
+  right: 2%;
+  width: 250px;
+  height: 270px;
+  background-image: url('/static/blood_spatter_isolated.png');
+  transform: rotate(-80deg) scale(0.95);
+  opacity: 0.55;
+}
+
+/* 5. Bottom-Right Corner Pool */
+.blood-patch.patch-5 {
+  bottom: 3%;
+  right: 8%;
+  width: 320px;
+  height: 340px;
+  background-image: url('/static/clean_photographic_blood.png');
+  transform: rotate(195deg) scale(1.1);
+  opacity: 0.68;
+}
+
+/* 6. Mid-Left behind Evidence File */
+.blood-patch.patch-6 {
+  top: 55%;
+  left: 12%;
+  width: 210px;
+  height: 220px;
+  background-image: url('/static/blood_spatter_isolated.png');
+  transform: rotate(50deg) scale(0.85);
+  opacity: 0.45;
+}
+
+/* 7. Top-Center Splatter Trail */
+.blood-patch.patch-7 {
+  top: 2%;
+  left: 44%;
+  width: 170px;
+  height: 180px;
+  background-image: url('/static/optical_extracted_blood.png');
+  transform: rotate(-18deg) scale(0.8);
+  opacity: 0.48;
+}
+
+/* 8. Bottom-Center Base Splatter */
+.blood-patch.patch-8 {
+  bottom: 2%;
+  left: 38%;
+  width: 260px;
+  height: 270px;
+  background-image: url('/static/clean_photographic_blood.png');
+  transform: rotate(145deg) scale(0.95);
+  opacity: 0.52;
+}
+
+/* ── Cinematic Desk-Lamp Ignition Arc On Site Reveal ─────── */
+.site-reveal-light-flash {
+  position: fixed;
+  inset: 0;
+  background: 
+    radial-gradient(circle at 50% 45%, rgba(255, 235, 175, 0.45) 0%, rgba(220, 130, 40, 0.15) 40%, transparent 70%),
+    radial-gradient(circle at 26% 48%, rgba(255, 210, 110, 0.35) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 80;
+  opacity: 0;
+}
+
+body.site-revealed .site-reveal-light-flash {
+  animation: deskLampTurnOn 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes deskLampTurnOn {
+  0% { opacity: 0; }
+  10% { opacity: 0.95; } /* Initial electric arc spark */
+  22% { opacity: 0.35; } /* Filament micro-dip */
+  36% { opacity: 0.8; }  /* Filament bloom */
+  55% { opacity: 0.45; }
+  75% { opacity: 0.15; }
+  100% { opacity: 0; }
+}
+
+/* ── Top-Left Brand Title with Animated Dripping Blood ───── */
+.brand-blood-header {
+  position: absolute;
+  top: 14px;
+  left: 28px;
+  z-index: 50;
+  user-select: none;
+  opacity: 1;
+}
+
+.brand-title-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  transform: rotate(-1.5deg);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.brand-title-badge:hover {
+  transform: rotate(-1deg) scale(1.03);
+}
+
+.brand-main-title {
+  font-family: 'Special Elite', 'Courier Prime', monospace;
+  font-size: 2.3rem;
+  font-weight: 700;
+  color: #8b1e1e;
+  letter-spacing: 3.5px;
+  line-height: 1;
+  text-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.95),
+    0 0 16px rgba(139, 30, 30, 0.6);
+}
+
+.brand-subtitle {
+  font-family: 'Special Elite', 'Courier Prime', monospace;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #9e2a2a;
+  letter-spacing: 2.5px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+  margin-left: 2px;
+  margin-top: 4px;
+}
+
+/* ── Top-Right Vintage Case Badge & Live Case Time ───────── */
+.top-right-badge-container {
+  position: absolute;
+  top: 16px;
+  right: 28px;
+  z-index: 50;
+  user-select: none;
+  opacity: 1;
+}
+
+.case-meta-header-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(18, 12, 8, 0.88);
+  border: 1px solid rgba(138, 102, 64, 0.35);
+  border-radius: 4px;
+  padding: 8px 14px;
+  box-shadow: 
+    0 4px 16px rgba(0, 0, 0, 0.8),
+    inset 0 0 10px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+}
+
+.case-badge-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-right: 12px;
+  border-right: 1px solid rgba(138, 102, 64, 0.25);
+}
+
+.pulse-beacon {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.pulse-beacon.green {
+  background: #2ebd59;
+  box-shadow: 0 0 8px #2ebd59, 0 0 14px rgba(46, 189, 89, 0.6);
+  animation: beaconPulse 2s infinite;
+}
+
+.pulse-beacon.amber {
+  background: #d89b28;
+  box-shadow: 0 0 8px #d89b28, 0 0 14px rgba(216, 155, 40, 0.6);
+  animation: beaconPulse 1.6s infinite;
+}
+
+.pulse-beacon.red {
+  background: #c92a2a;
+  box-shadow: 0 0 8px #c92a2a, 0 0 14px rgba(201, 42, 42, 0.8);
+  animation: beaconPulse 1.1s infinite;
+}
+
+@keyframes beaconPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.45; transform: scale(0.85); }
+}
+
+.badge-text {
+  font-family: 'Special Elite', 'Courier Prime', monospace;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #dfd2be;
+  letter-spacing: 1.2px;
+}
+
+.case-timer-strip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.timer-label {
+  font-family: 'Special Elite', monospace;
+  font-size: 0.75rem;
+  color: #8f7961;
+  letter-spacing: 1px;
+}
+
+.timer-val {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #8b1e1e;
+  letter-spacing: 1.5px;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 2px 6px;
+  border-radius: 2px;
+  border: 1px solid rgba(139, 30, 30, 0.3);
+}
+
+/* ── Detective Workspace Arena Stage Layout ───────────────── */
+.detective-workspace-stage {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 22px;
+  width: 100%;
+  max-width: 1620px;
+  margin: 64px auto 78px auto;
+  padding: 0 20px;
+  position: relative;
+  z-index: 10;
+}
+
+/* ── Desk Wings (Left & Right Investigation Flanks) ────────── */
+.desk-wing {
+  width: 255px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-top: 14px;
+}
+
+.desk-wing-left {
+  transform: none;
+  transition: transform 0.3s ease;
+}
+
+.desk-wing-left:hover {
+  transform: none;
+}
+
+/* ── Common Desk Widget Cards (Exact Aged Kraft Texture) ── */
+.desk-widget-card,
+.evidence-folder-card {
+  background-image: 
+    linear-gradient(rgba(20, 14, 8, 0.06), rgba(20, 14, 8, 0.14)),
+    url('/static/cardboard_manila_texture.png');
+  background-size: cover, cover;
+  background-position: center, center;
+  background-repeat: no-repeat;
+  border: 1px solid rgba(75, 55, 35, 0.55);
+  border-radius: 4px;
+  padding: 14px 14px 12px 14px;
+  box-shadow: 
+    0 12px 28px rgba(0, 0, 0, 0.75),
+    0 2px 6px rgba(0, 0, 0, 0.55),
+    inset 0 0 16px rgba(50, 30, 15, 0.35);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.25s ease;
+}
+
+.desk-widget-card:hover,
+.evidence-folder-card:hover {
+  box-shadow: 
+    0 16px 36px rgba(0, 0, 0, 0.85),
+    0 4px 12px rgba(0, 0, 0, 0.6),
+    inset 0 0 20px rgba(50, 30, 15, 0.4);
+}
+
+.widget-header,
+.folder-tab-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px dashed rgba(60, 40, 25, 0.5);
+  padding-bottom: 6px;
+  margin-bottom: 10px;
+}
+
+.folder-title,
+.widget-title {
+  font-family: 'Special Elite', monospace;
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: #1e1308;
+  letter-spacing: 1px;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+.badge-tag {
+  font-family: 'Special Elite', monospace;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #8b1e1e;
+  border: 1px solid rgba(139, 30, 30, 0.7);
+  padding: 1px 4px;
+  border-radius: 2px;
+  letter-spacing: 0.8px;
+  background: rgba(139, 30, 30, 0.08);
+}
+
+/* ── Evidence Folder Items List ────────────────────────────── */
+.evidence-item-list {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.evidence-tab-item {
+  background-image: 
+    linear-gradient(rgba(255, 250, 240, 0.28), rgba(20, 14, 8, 0.06)),
+    url('/static/cardboard_manila_texture.png');
+  background-size: cover, cover;
+  background-position: center, center;
+  border: 1px solid rgba(85, 60, 40, 0.45);
+  border-radius: 3px;
+  padding: 8px 10px;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+  box-shadow: 
+    0 2px 6px rgba(0, 0, 0, 0.35),
+    inset 0 0 8px rgba(50, 30, 15, 0.15);
+}
+
+.evidence-tab-item:hover {
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.4), rgba(20, 14, 8, 0.02)),
+    url('/static/cardboard_manila_texture.png');
+  border-color: #8b1e1e;
+  transform: translateX(3px);
+  box-shadow: 
+    0 4px 14px rgba(0, 0, 0, 0.5),
+    inset 0 0 10px rgba(139, 30, 30, 0.15);
+}
+
+.item-tag-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3px;
+}
+
+.item-code {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #3b2816;
+}
+
+.item-stamp {
+  font-family: 'Special Elite', monospace;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+}
+
+.item-summary {
+  font-family: 'Special Elite', monospace;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #140d06;
+  letter-spacing: 0.5px;
+}
+
+.item-meta-note {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.7rem;
+  color: #433120;
+  margin-top: 2px;
+  line-height: 1.2;
+}
+
+.paper-clip-deco {
+  position: absolute;
+  top: -4px;
+  right: 12px;
+  width: 10px;
+  height: 20px;
+  border: 2px solid #8d939b;
+  border-radius: 6px;
+  opacity: 0.85;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+/* ── Case Progress & Clue Tracker ─────────────────────────── */
+.progress-bar-container {
+  margin-bottom: 10px;
+}
+
+.progress-bar-track {
+  width: 100%;
+  height: 9px;
+  background: rgba(30, 20, 10, 0.35);
+  border: 1px solid rgba(60, 40, 25, 0.6);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 4px;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #8b1e1e, #bb3333);
+  transition: width 0.4s ease;
+}
+
+.progress-meta-row {
+  display: flex;
+  justify-content: space-between;
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.68rem;
+  color: #2e2014;
+}
+
+.progress-val {
+  font-weight: 700;
+  color: #8b1e1e;
+}
+
+.clue-stars-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 6px;
+  border-top: 1px dashed rgba(60, 40, 25, 0.4);
+  font-family: 'Special Elite', monospace;
+}
+
+.clue-label {
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: #1e1308;
+}
+
+.clue-counter {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.clue-node {
+  font-size: 1.05rem;
+  color: #7d6852;
+}
+
+.clue-node.active {
+  color: #c92a2a;
+  text-shadow: 0 0 6px rgba(201, 42, 42, 0.6);
+}
+
+.clue-count-text {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.72rem;
+  color: #3a2818;
+  margin-left: 3px;
+}
+
+
+
+
+
+/* ── Interactive Evidence Inspector Modal ─────────────────── */
+.evidence-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(4, 2, 2, 0.85);
+  backdrop-filter: blur(8px);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  padding: 20px;
+}
+
+.evidence-modal-backdrop.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.evidence-modal-paper {
+  background: 
+    linear-gradient(135deg, #f7efe1 0%, #ece0ce 100%),
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.07'/%3E%3C/svg%3E");
+  width: 100%;
+  max-width: 680px;
+  max-height: 85vh;
+  overflow-y: auto;
+  border: 1px solid rgba(90, 70, 50, 0.45);
+  border-radius: 6px;
+  padding: 32px 30px;
+  box-shadow: 
+    0 25px 70px rgba(0, 0, 0, 0.9),
+    0 4px 16px rgba(0, 0, 0, 0.6),
+    inset 0 0 30px rgba(110, 85, 55, 0.15);
+  position: relative;
+  transform: scale(0.94);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.evidence-modal-backdrop.active .evidence-modal-paper {
+  transform: scale(1);
+}
+
+.btn-close-modal {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  background: rgba(139, 30, 30, 0.12);
+  border: 1px solid #8b1e1e;
+  color: #8b1e1e;
+  font-family: 'Special Elite', monospace;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-close-modal:hover {
+  background: #8b1e1e;
+  color: #fff;
+}
+
+/* Evidence Inner Typography & Redacted Styling */
+.modal-evidence-header {
+  border-bottom: 2px solid #3b2a1a;
+  padding-bottom: 12px;
+  margin-bottom: 18px;
+}
+
+.modal-case-no {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.8rem;
+  color: #6b5540;
+}
+
+.modal-evidence-title {
+  font-family: 'Special Elite', monospace;
+  font-size: 1.4rem;
+  color: #8b1e1e;
+  letter-spacing: 1.5px;
+  margin: 4px 0;
+}
+
+.redacted-bar {
+  display: inline-block;
+  background: #110d0a;
+  color: transparent;
+  user-select: none;
+  padding: 0 4px;
+  border-radius: 2px;
+}
+
+.handwritten-note {
+  font-family: 'Special Elite', cursive, monospace;
+  font-size: 0.95rem;
+  color: #1a3c75;
+  transform: rotate(-1.5deg);
+  margin: 14px 0;
+  line-height: 1.4;
+}
+
+.evidence-photo-frame {
+  background: #fff;
+  padding: 10px 10px 24px 10px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+  width: 220px;
+  margin: 16px auto;
+  text-align: center;
+  transform: rotate(1.2deg);
+}
+
+.evidence-photo-frame img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  filter: sepia(0.3) contrast(1.1);
+}
+
+.photo-caption {
+  font-family: 'Special Elite', monospace;
+  font-size: 0.8rem;
+  color: #3b2a1a;
+  margin-top: 8px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ── Main Center Dossier Book ────────────────────────────── */
+.dossier-pages-spread {
+  width: 100%;
+  max-width: 1080px;
+  min-height: 660px;
+  margin-top: 54px;
+  display: flex;
+  background-image: 
+    linear-gradient(to right, rgba(4, 3, 2, 0.98) 0%, rgba(4, 3, 2, 0.65) 12px, rgba(4, 3, 2, 0) 28px, rgba(4, 3, 2, 0) calc(100% - 28px), rgba(4, 3, 2, 0.65) calc(100% - 12px), rgba(4, 3, 2, 0.98) 100%),
+    linear-gradient(to bottom, rgba(4, 3, 2, 0.98) 0%, rgba(4, 3, 2, 0.65) 12px, rgba(4, 3, 2, 0) 28px, rgba(4, 3, 2, 0) calc(100% - 28px), rgba(4, 3, 2, 0.65) calc(100% - 12px), rgba(4, 3, 2, 0.98) 100%),
+    url('/static/dossier_book.jpg');
+  background-size: 100% 100%, 100% 100%, 100% 100%;
+  background-position: center, center, center;
+  background-repeat: no-repeat;
+  border-radius: 8px;
+  box-shadow: 
+    0 40px 100px rgba(0, 0, 0, 0.98),
+    0 18px 45px rgba(0, 0, 0, 0.94),
+    0 0 50px rgba(0, 0, 0, 0.9),
+    0 2px 6px rgba(0, 0, 0, 0.98);
+  position: relative;
+  padding: 24px 20px 22px 20px;
+  z-index: 10;
+  transition: box-shadow 0.4s ease;
+}
+
+.dossier-pages-spread:hover {
+  box-shadow: 
+    0 48px 115px rgba(0, 0, 0, 0.99),
+    0 22px 55px rgba(0, 0, 0, 0.95),
+    0 0 55px rgba(0, 0, 0, 0.95);
+}
+
+/* ── Individual Page Sheets (Transparent Overlay on Book) ─── */
+.dossier-sheet {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  position: relative;
+  font-family: 'Courier Prime', monospace;
+  color: #231b14;
+}
+
+/* ── Left Sheet: DEFENDER DOSSIER ────────────────────────── */
+.left-sheet {
+  flex: 0.92;
+  padding: 6px 76px 12px 14px; /* Stop 76px before dark seam */
+  border-right: none;
+}
+
+/* ── Right Sheet: AGENT SETUP & PHASES ────────────────────── */
+.right-sheet {
+  flex: 1.05;
+  padding: 6px 142px 12px 26px; /* Stop 142px before binder clamp */
+}
+
+/* ── Section Titles ───────────────────────────────────────── */
+.sheet-title {
+  font-family: 'Special Elite', 'Courier Prime', monospace;
+  font-size: 1.18rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: #241c14;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  padding-bottom: 4px;
+}
+
+.right-sheet .sheet-title,
+.sheet-title.title-setup {
+  color: #8b1e1e;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.shield-badge {
+  display: flex;
+  align-items: center;
+  filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.4));
+  animation: shieldGlowPulse 4s ease-in-out infinite alternate;
+}
+
+@keyframes shieldGlowPulse {
+  0% { transform: scale(1); filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.4)); }
+  100% { transform: scale(1.05); filter: drop-shadow(0 0 4px rgba(139, 30, 30, 0.45)); }
+}
+
+/* ── Left Page: Photo & Meta ─────────────────────────────── */
+.profile-layout {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 12px;
+  align-items: flex-start;
+}
+
+.photo-container {
+  width: 114px;
+  height: 132px;
+  background: #eae0cf;
+  border: 1px solid #75634d;
+  box-shadow: 
+    1px 3px 8px rgba(0, 0, 0, 0.35),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.4);
+  padding: 2px;
+  position: relative;
+  flex-shrink: 0;
+  transform: rotate(-0.5deg);
+  opacity: 1;
+  transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: pointer;
+}
+
+body.site-revealed .photo-container {
+  animation: photoStampImpact 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.35s backwards;
+}
+
+@keyframes photoStampImpact {
+  0% {
+    opacity: 0;
+    transform: scale(2.4) translateY(-35px) rotate(-14deg);
+    filter: blur(8px) contrast(0.5);
+    box-shadow: 0 40px 60px rgba(0, 0, 0, 0.8);
+  }
+  62% {
+    opacity: 1;
+    transform: scale(0.94) translateY(2px) rotate(0.8deg);
+    filter: blur(0) contrast(1.35);
+    box-shadow: 0 0 0 8px rgba(139, 30, 30, 0.35), 0 8px 24px rgba(0, 0, 0, 0.7);
+  }
+  80% {
+    transform: scale(1.02) translateY(-1px) rotate(-0.8deg);
+    box-shadow: 0 0 0 2px rgba(139, 30, 30, 0.15), 0 4px 12px rgba(0, 0, 0, 0.5);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(-0.5deg) translateY(0);
+    filter: blur(0) contrast(1);
+    box-shadow: 1px 3px 8px rgba(0, 0, 0, 0.35), inset 0 0 0 1px rgba(255, 255, 255, 0.4);
+  }
+}
+
+.photo-container:hover {
+  transform: rotate(-1.5deg) scale(1.06) translateY(-3px);
+  box-shadow: 
+    0 10px 24px rgba(0, 0, 0, 0.65),
+    0 0 12px rgba(139, 30, 30, 0.3),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.6);
+}
+
+.agent-portrait-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: contrast(1.15) grayscale(1);
+  display: block;
+  transition: filter 0.3s ease;
+}
+
+.photo-container:hover .agent-portrait-img {
+  filter: contrast(1.22) grayscale(0.85);
+}
+
+.tape-strip {
+  position: absolute;
+  background: rgba(238, 226, 188, 0.78);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  border: 1px solid rgba(175, 155, 115, 0.38);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.16);
+  z-index: 5;
+  transition: transform 0.3s ease;
+}
+
+.tape-top-right {
+  top: -7px;
+  right: -8px;
+  width: 32px;
+  height: 13px;
+  transform: rotate(32deg);
+}
+
+.tape-bottom-left {
+  bottom: -7px;
+  left: -8px;
+  width: 32px;
+  height: 13px;
+  transform: rotate(35deg);
+}
+
+.tape-bottom-right {
+  bottom: -5px;
+  right: -7px;
+  width: 28px;
+  height: 11px;
+  transform: rotate(-22deg);
+}
+
+.agent-meta {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 6px;
+  padding: 2px 0;
+}
+
+.meta-row {
+  margin-bottom: 2px;
+}
+
+.meta-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #382c20;
+  letter-spacing: 0.8px;
+  margin-bottom: 1px;
+}
+
+.meta-val {
+  font-family: 'Special Elite', 'Courier Prime', monospace;
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.red-stamp-text {
+  color: #8b1e1e;
+  text-shadow: 0 0 1px rgba(139, 30, 30, 0.2);
+  display: inline-block;
+  opacity: 1;
+}
+
+body.site-revealed .red-stamp-text {
+  animation: stampInkThud 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.6s backwards;
+}
+
+@keyframes stampInkThud {
+  0% {
+    opacity: 0;
+    transform: scale(1.5);
+    filter: blur(2px);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(0.96);
+    filter: blur(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+  }
+}
+
+.role-badge {
+  display: inline-block;
+  background: #14100c;
+  color: #d82b2b;
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 2px;
+  letter-spacing: 1px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  transition: all 0.2s ease;
+}
+
+.role-badge:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 8px rgba(216, 43, 43, 0.5);
+}
+
+/* ── Circular Seal Stamp ─────────────────────────────────── */
+.round-seal-stamp {
+  position: absolute;
+  top: 175px;
+  right: 76px; /* Kept strictly inside left page, to the left of the dark seam */
+  width: 74px;
+  height: 74px;
+  border-radius: 50%;
+  border: 1.5px dashed #6f5942;
+  opacity: 0.65;
+  transform: rotate(14deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: pointer;
+}
+
+body.site-revealed .round-seal-stamp {
+  animation: roundSealStampIn 0.65s cubic-bezier(0.175, 0.885, 0.32, 1.2) 0.75s backwards;
+}
+
+@keyframes roundSealStampIn {
+  0% {
+    opacity: 0;
+    transform: scale(1.6) rotate(40deg);
+  }
+  70% {
+    opacity: 0.95;
+    transform: scale(0.95) rotate(12deg);
+  }
+  100% {
+    opacity: 0.65;
+    transform: scale(1) rotate(14deg);
+  }
+}
+
+.round-seal-stamp:hover {
+  transform: rotate(20deg) scale(1.08);
+  opacity: 0.95;
+  filter: drop-shadow(0 2px 8px rgba(111, 89, 66, 0.35));
+}
+
+.seal-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.seal-emblem {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid #6f5942;
+  border-radius: 50%;
+}
+
+.seal-hex {
+  font-size: 14px;
+  color: #6f5942;
+}
+
+/* ── Left Page: Objectives & Notes ───────────────────────── */
+.dossier-body {
+  margin-top: 18px;
+}
+
+.dossier-heading {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  color: #1a140e;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dossier-heading::before {
+  content: '■';
+  color: #8b1e1e;
+  font-size: 0.65rem;
+}
+
+.dossier-para {
+  font-size: 0.77rem;
+  line-height: 1.45;
+  color: #241c14;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  overflow-wrap: break-word;
+}
+
+/* ── Red Confidential Box Stamp ──────────────────────────── */
+.confidential-box-stamp {
+  position: absolute;
+  bottom: 8px;
+  right: 74px; /* Kept strictly inside left page, to the left of the dark seam */
+  border: 2px solid #8b1e1e;
+  border-radius: 3px;
+  padding: 4px 10px;
+  transform: rotate(-4deg);
+  opacity: 0.82;
+  text-align: center;
+  pointer-events: none;
+  transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+body.site-revealed .confidential-box-stamp {
+  animation: confStampImpact 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.2) 1.1s backwards;
+}
+
+@keyframes confStampImpact {
+  0% {
+    opacity: 0;
+    transform: scale(1.6) rotate(-14deg);
+  }
+  75% {
+    opacity: 1;
+    transform: scale(0.94) rotate(-3deg);
+  }
+  100% {
+    opacity: 0.82;
+    transform: scale(1) rotate(-4deg);
+  }
+}
+
+.confidential-box-stamp:hover {
+  transform: rotate(-7deg) scale(1.08);
+  opacity: 1;
+}
+
+.stamp-title {
+  font-family: 'Special Elite', 'Courier Prime', monospace;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #8b1e1e;
+  letter-spacing: 2px;
+  line-height: 1;
+}
+
+.stamp-subtitle {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.52rem;
+  font-weight: 700;
+  color: #8b1e1e;
+  letter-spacing: 1.5px;
+  margin-top: 2px;
+}
+
+/* ── Right Page: Glassmorphic Cards & Components ─────────── */
+
+/* Instruction Box (Frosted Parchment Glass) */
+.instruction-box {
+  display: flex;
+  gap: 12px;
+  background: rgba(232, 220, 198, 0.35);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(150, 126, 94, 0.42);
+  border-radius: 6px;
+  padding: 10px 14px;
+  margin-bottom: 14px;
+  align-items: flex-start;
+  box-shadow: 
+    inset 0 1px 1px rgba(255, 255, 255, 0.45),
+    0 2px 6px rgba(0, 0, 0, 0.05);
+  opacity: 1;
+  transform: none;
+}
+
+.doc-icon {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+  opacity: 0.85;
+}
+
+.instruction-text {
+  font-size: 0.77rem;
+  line-height: 1.45;
+  color: #241c14;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  overflow-wrap: break-word;
+}
+
+/* Form Groups - Guaranteed 100% visible across all phases */
+.field-group {
+  margin-bottom: 12px;
+  opacity: 1;
+  transform: none;
+  display: block;
+}
+
+.field-label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #241c14;
+  letter-spacing: 0.8px;
+  margin-bottom: 4px;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+/* Form Inputs & Textarea (High-End Frosted Parchment Glass) */
+.parchment-input {
+  width: 100%;
+  background: rgba(250, 243, 230, 0.65);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(135, 105, 75, 0.55);
+  border-radius: 5px;
+  padding: 8px 12px;
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #1a140e;
+  box-shadow: 
+    inset 0 1px 3px rgba(0, 0, 0, 0.08),
+    0 1px 0 rgba(255, 255, 255, 0.55);
+  transition: all 0.2s ease;
+}
+
+.parchment-input:focus {
+  outline: none;
+  border-color: #8b1e1e;
+  background: rgba(255, 252, 245, 0.9);
+  box-shadow: 
+    0 0 0 2px rgba(139, 30, 30, 0.25),
+    inset 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.parchment-input::placeholder {
+  color: #655442;
+  opacity: 0.85;
+  font-weight: 400;
+}
+
+.parchment-textarea {
+  width: 100%;
+  background: rgba(250, 243, 230, 0.65);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(135, 105, 75, 0.55);
+  border-radius: 5px;
+  padding: 8px 12px;
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1.45;
+  color: #1a140e;
+  box-shadow: 
+    inset 0 1px 3px rgba(0, 0, 0, 0.08),
+    0 1px 0 rgba(255, 255, 255, 0.55);
+  resize: vertical;
+  transition: all 0.2s ease;
+}
+
+.parchment-textarea:focus {
+  outline: none;
+  border-color: #8b1e1e;
+  background: rgba(255, 252, 245, 0.9);
+  box-shadow: 
+    0 0 0 2px rgba(139, 30, 30, 0.25),
+    inset 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.parchment-textarea::placeholder {
+  color: #655442;
+  opacity: 0.85;
+  font-weight: 400;
+}
+
+/* ── Buttons (Industrial Grade Polish) ────────────────────── */
+.form-btn-row {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+  opacity: 1;
+  transform: none;
+}
+
+.btn-dossier-red {
+  position: relative;
+  overflow: hidden;
+  background-color: #7c1515;
+  background-image: linear-gradient(180deg, #961e1e 0%, #681010 100%);
+  color: #f7ede0;
+  font-family: 'Special Elite', 'Courier Prime', monospace;
+  font-size: 0.86rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  padding: 9px 18px;
+  border: 1px solid #4a0a0a;
+  border-radius: 5px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+  box-shadow: 
+    0 3px 6px rgba(0, 0, 0, 0.35),
+    inset 0 1px 1px rgba(255, 255, 255, 0.25);
+  transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  animation: btnRedPulse 4s ease-in-out infinite alternate;
+}
+
+@keyframes btnRedPulse {
+  0% { box-shadow: 0 3px 6px rgba(0, 0, 0, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.25); }
+  100% { box-shadow: 0 4px 14px rgba(160, 20, 20, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.4); }
+}
+
+.btn-dossier-red::after,
+.btn-dossier-paper::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -80%;
+  width: 40%;
+  height: 200%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.28), transparent);
+  transform: rotate(25deg);
+  transition: all 0.6s ease;
+  pointer-events: none;
+}
+
+.btn-dossier-red:hover::after,
+.btn-dossier-paper:hover::after {
+  left: 140%;
+}
+
+.btn-dossier-red:hover {
+  background: #a32222;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(160, 20, 20, 0.55), inset 0 1px 2px rgba(255, 255, 255, 0.4);
+}
+
+.btn-dossier-red:active {
+  transform: translateY(1px);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.btn-dossier-red:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  animation: none;
+}
+
+.btn-dossier-paper {
+  position: relative;
+  overflow: hidden;
+  background: rgba(234, 222, 198, 0.45);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: #241c14;
+  font-family: 'Special Elite', 'Courier Prime', monospace;
+  font-size: 0.86rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  padding: 9px 18px;
+  border: 1px solid rgba(130, 104, 74, 0.45);
+  border-radius: 5px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  box-shadow: 
+    0 2px 5px rgba(0, 0, 0, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.btn-dossier-paper:hover {
+  background: rgba(248, 238, 220, 0.8);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.22), 0 0 10px rgba(180, 150, 110, 0.25);
+}
+
+.btn-dossier-paper:active {
+  transform: translateY(1px);
+}
+
+.btn-sm {
+  font-size: 0.78rem;
+  padding: 7px 14px;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.btn-svg {
+  flex-shrink: 0;
+}
+
+/* ── Fullscreen Terminal Mode Toggle Button ──────────────── */
+.btn-fullscreen-toggle {
+  background: rgba(26, 18, 12, 0.85);
+  border: 1px solid rgba(145, 120, 88, 0.5);
+  color: #e5d7c5;
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  padding: 5px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+}
+
+.btn-fullscreen-toggle:hover {
+  background: #8b1e1e;
+  color: #fff;
+  border-color: #a82424;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(139, 30, 30, 0.4);
+}
+
+/* ── Divider ─────────────────────────────────────────────── */
+.dossier-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(140, 115, 85, 0.5), transparent);
+  margin: 14px 0;
+}
+
+/* ── Game Phases View Switching ──────────────────────────── */
+.phase {
+  display: none;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.phase.active {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Phase 2: Swap / Arm View ────────────────────────────── */
+.swap-inner-view {
+  text-align: center;
+  padding: 10px 0;
+}
+
+.swap-big-title {
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.swap-main-p {
+  font-size: 0.88rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.swap-secondary-p {
+  font-size: 0.82rem;
+  color: #4a3e30;
+}
+
+/* ── Phase 3: Attack Console View ────────────────────────── */
+.arena-match-strip {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid rgba(145, 120, 88, 0.4);
+  background: rgba(232, 220, 198, 0.35);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border-radius: 5px;
+  padding: 7px 12px;
+  margin-bottom: 10px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.typewriter-chat {
+  height: 225px;
+  overflow-y: auto;
+  border: 1px solid rgba(145, 120, 88, 0.45);
+  background: rgba(244, 236, 220, 0.38);
+  backdrop-filter: blur(10px) saturate(120%);
+  -webkit-backdrop-filter: blur(10px) saturate(120%);
+  border-radius: 6px;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+  font-size: 0.85rem;
+  box-shadow: 
+    inset 0 2px 5px rgba(0, 0, 0, 0.08),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.3),
+    0 3px 8px rgba(0, 0, 0, 0.04);
+}
+
+/* Custom Vintage Scrollbar */
+.typewriter-chat::-webkit-scrollbar,
+.logs-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.typewriter-chat::-webkit-scrollbar-track,
+.logs-container::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 3px;
+}
+
+.typewriter-chat::-webkit-scrollbar-thumb,
+.logs-container::-webkit-scrollbar-thumb {
+  background: rgba(120, 95, 68, 0.45);
+  border-radius: 3px;
+}
+
+.typewriter-chat::-webkit-scrollbar-thumb:hover,
+.logs-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 75, 50, 0.7);
+}
+
+.welcome {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #4a3e30;
+  font-style: italic;
+  font-size: 0.82rem;
+}
+
+.msg {
+  margin-bottom: 10px;
+  padding-left: 16px;
+  position: relative;
+  line-height: 1.45;
+  word-break: break-word;
+  animation: msgSlideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes msgSlideIn {
+  0% { opacity: 0; transform: translateY(8px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.msg::before {
+  content: '>';
+  position: absolute;
+  left: 0;
+  color: #8b1e1e;
+  font-weight: 700;
+}
+
+.msg--user {
+  color: #1a140e;
+  font-weight: 700;
+}
+
+.msg--ai {
+  color: #2b1f14;
+  background: rgba(255, 255, 255, 0.3);
+  padding: 6px 10px 6px 20px;
+  border-left: 2px solid #8b1e1e;
+  border-radius: 0 4px 4px 0;
+  animation: msgSlideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards, aiBorderPulse 3s infinite alternate;
+}
+
+@keyframes aiBorderPulse {
+  0% { border-left-color: #8b1e1e; }
+  100% { border-left-color: #e52b2b; }
+}
+
+.msg--system {
+  color: #8b1e1e;
+  font-style: italic;
+  font-size: 0.8rem;
+}
+
+/* ── Upgraded In-Chat Detective Typing Indicator ─────────── */
+.typing {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(24, 18, 12, 0.85);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid rgba(135, 108, 76, 0.45);
+  border-left: 3px solid #8b1e1e;
+  border-radius: 4px;
+  padding: 6px 14px;
+  margin-bottom: 10px;
+  font-family: 'Courier Prime', monospace;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+  animation: fadeInDossier 0.2s ease-out;
+}
+
+.typing-radar-mini {
+  position: relative;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1px solid rgba(180, 40, 40, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: #0d0906;
+  flex-shrink: 0;
+}
+
+.mini-sweep {
+  position: absolute;
+  inset: 0;
+  background: conic-gradient(from 0deg, transparent 0deg, rgba(200, 30, 30, 0.8) 360deg);
+  animation: radarSpin 1.6s linear infinite;
+  border-radius: 50%;
+}
+
+.mini-core {
+  position: relative;
+  z-index: 2;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #ff4444;
+  box-shadow: 0 0 6px #ff2222;
+}
+
+.typing-content {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.typing-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #ebdcca;
+  letter-spacing: 0.8px;
+}
+
+.typing-dots {
+  display: flex;
+  gap: 3px;
+  margin-left: 2px;
+}
+
+.typing-dots span {
+  width: 4px;
+  height: 4px;
+  background: #8b1e1e;
+  border-radius: 50%;
+  animation: typingPulse 0.9s infinite alternate;
+}
+
+.typing-dots span:nth-child(2) { animation-delay: 0.25s; }
+.typing-dots span:nth-child(3) { animation-delay: 0.5s; }
+
+.typing-wave {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 12px;
+  margin-left: 6px;
+}
+
+.typing-wave span {
+  width: 2px;
+  background: #8b1e1e;
+  border-radius: 1px;
+  animation: waveBarBounce 0.7s ease-in-out infinite alternate;
+}
+
+.typing-wave span:nth-child(1) { height: 40%; animation-delay: 0.1s; }
+.typing-wave span:nth-child(2) { height: 90%; animation-delay: 0.3s; }
+.typing-wave span:nth-child(3) { height: 60%; animation-delay: 0.15s; }
+.typing-wave span:nth-child(4) { height: 100%; animation-delay: 0.4s; }
+.typing-wave span:nth-child(5) { height: 50%; animation-delay: 0.25s; }
+
+@keyframes typingPulse {
+  0% { opacity: 0.2; transform: scale(0.8); }
+  100% { opacity: 1; transform: scale(1.1); }
+}
+
+.chat-input-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.btn-send {
+  flex-shrink: 0;
+  padding: 8px 16px;
+}
+
+.guess-card-dossier {
+  background-image: 
+    linear-gradient(rgba(20, 14, 8, 0.08), rgba(20, 14, 8, 0.16)),
+    url('/static/cardboard_manila_texture.png');
+  background-size: cover;
+  border: 1px solid rgba(139, 30, 30, 0.55);
+  border-radius: 4px;
+  padding: 10px 14px 8px 14px;
+  margin-top: 8px;
+  box-shadow: 
+    0 4px 14px rgba(0, 0, 0, 0.5),
+    inset 0 0 10px rgba(50, 30, 15, 0.2);
+  position: relative;
+  flex-shrink: 0;
+}
+
+.guess-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  padding-bottom: 4px;
+  border-bottom: 1px dashed rgba(139, 30, 30, 0.35);
+}
+
+.guess-header-left {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.guess-card-icon {
+  font-size: 0.95rem;
+}
+
+.guess-card-header .field-label {
+  font-family: 'Special Elite', monospace;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #1e1308;
+  letter-spacing: 0.8px;
+  margin-bottom: 0;
+}
+
+.guess-badge-tag {
+  font-family: 'Special Elite', monospace;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #8b1e1e;
+  border: 1px solid rgba(139, 30, 30, 0.6);
+  background: rgba(139, 30, 30, 0.08);
+  padding: 1px 5px;
+  border-radius: 2px;
+  letter-spacing: 0.8px;
+}
+
+.guess-input-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.guess-text-input {
+  flex: 1;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #8b1e1e;
+  border-color: rgba(139, 30, 30, 0.45);
+}
+
+.btn-guess-action {
+  flex-shrink: 0;
+  padding: 8px 16px;
+  font-size: 0.82rem;
+  white-space: nowrap;
+}
+
+.guess-feedback {
+  margin-top: 6px;
+  font-weight: 700;
+  font-size: 0.82rem;
+}
+
+.guess-result--wrong {
+  color: #8b1e1e;
+}
+
+.guess-result--correct {
+  color: #1e7e34;
+}
+
+/* ── Fullscreen LLM Conversation Arena View ───────────────── */
+body.chat-fullscreen-active {
+  overflow: hidden;
+  align-items: stretch;
+  justify-content: stretch;
+  padding: 0;
+}
+
+body.chat-fullscreen-active .brand-blood-header {
+  position: fixed;
+  top: 10px;
+  left: 20px;
+  z-index: 95;
+}
+
+body.chat-fullscreen-active .brand-blood-img {
+  height: 36px;
+}
+
+body.chat-fullscreen-active .top-right-badge-container,
+body.chat-fullscreen-active .vintage-status-dock {
+  opacity: 0.4;
+  transition: opacity 0.2s ease;
+}
+
+body.chat-fullscreen-active .top-right-badge-container:hover,
+body.chat-fullscreen-active .vintage-status-dock:hover {
+  opacity: 1;
+}
+
+body.chat-fullscreen-active .dossier-pages-spread {
+  position: fixed;
+  inset: 12px;
+  width: calc(100vw - 24px);
+  max-width: none;
+  height: calc(100vh - 24px);
+  max-height: none;
+  z-index: 85;
+  display: flex;
+  background: url('/static/bg_texture.jpg') no-repeat center center;
+  background-size: cover;
+  padding: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.95);
+  border: 1.5px solid rgba(145, 120, 88, 0.6);
+}
+
+body.chat-fullscreen-active .left-sheet {
+  display: none;
+}
+
+body.chat-fullscreen-active .right-sheet {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  padding: 16px 28px 14px 28px;
+  display: flex;
+  flex-direction: column;
+  background: rgba(22, 17, 12, 0.82);
+  backdrop-filter: blur(14px) saturate(120%);
+  -webkit-backdrop-filter: blur(14px) saturate(120%);
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+body.chat-fullscreen-active #phase-attack {
+  flex: 1;
+  display: flex !important;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  gap: 8px;
+}
+
+body.chat-fullscreen-active .arena-match-strip {
+  background: rgba(38, 29, 21, 0.85);
+  border: 1px solid rgba(145, 120, 88, 0.55);
+  padding: 9px 16px;
+  font-size: 0.92rem;
+  border-radius: 6px;
+  margin-bottom: 0;
+  flex-shrink: 0;
+}
+
+body.chat-fullscreen-active .typewriter-chat {
+  flex: 1 1 0;
+  height: auto;
+  max-height: none;
+  min-height: 100px;
+  background: rgba(14, 10, 7, 0.85);
+  border: 1px solid rgba(135, 108, 76, 0.5);
+  border-radius: 6px;
+  padding: 16px 20px;
+  margin-bottom: 0;
+  font-size: 0.94rem;
+  box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.6);
+  overflow-y: auto;
+}
+
+body.chat-fullscreen-active .typewriter-chat .msg {
+  font-size: 0.92rem;
+  line-height: 1.55;
+  margin-bottom: 12px;
+}
+
+body.chat-fullscreen-active .typewriter-chat .msg--ai {
+  background: rgba(255, 255, 255, 0.06);
+  color: #f0e6d8;
+  border-left: 3px solid #b82828;
+  padding: 8px 14px 8px 24px;
+}
+
+body.chat-fullscreen-active .typewriter-chat .msg--user {
+  color: #f7ede0;
+}
+
+body.chat-fullscreen-active .chat-input-row {
+  margin-bottom: 0;
+  display: flex;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+body.chat-fullscreen-active .chat-input-row .parchment-input {
+  font-size: 0.94rem;
+  padding: 10px 16px;
+  background: rgba(242, 234, 218, 0.92);
+  color: #120c06;
+}
+
+body.chat-fullscreen-active .guess-card-dossier {
+  background-image: 
+    linear-gradient(rgba(24, 18, 12, 0.88), rgba(24, 18, 12, 0.94)),
+    url('/static/cardboard_manila_texture.png');
+  background-size: cover;
+  border: 1px solid rgba(139, 30, 30, 0.65);
+  border-radius: 6px;
+  padding: 10px 16px 8px 16px;
+  margin-top: 0;
+  flex-shrink: 0;
+  display: block;
+}
+
+body.chat-fullscreen-active .guess-card-header .field-label {
+  color: #dfd2be;
+}
+
+body.chat-fullscreen-active .guess-text-input {
+  background: rgba(242, 234, 218, 0.92);
+  color: #8b1e1e;
+  font-size: 0.94rem;
+  padding: 8px 14px;
+}
+
+/* ── Phase 4: Debriefing / Finished View ─────────────────── */
+.finished-debrief {
+  text-align: center;
+  padding: 8px 0;
+}
+
+.finish-title {
+  font-size: 1.45rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.finish-msg {
+  font-size: 0.88rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.finish-stats {
+  font-size: 0.82rem;
+}
+
+.logs-container {
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid rgba(145, 120, 88, 0.45);
+  background: rgba(244, 236, 220, 0.38);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 5px;
+  margin-top: 6px;
+}
+
+.dossier-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.78rem;
+}
+
+.dossier-table th, .dossier-table td {
+  padding: 6px 10px;
+  text-align: left;
+  border-bottom: 1px dotted rgba(150, 125, 95, 0.5);
+}
+
+.dossier-table th {
+  background: rgba(0, 0, 0, 0.05);
+  font-weight: 700;
+}
+
+/* ── Bottom-Right Unified Enclosed Status Dock ────────────── */
+.vintage-status-dock {
+  position: fixed;
+  bottom: 14px;
+  right: 22px;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  background: url('/static/status_dock_bg.png') no-repeat center center;
+  background-size: 100% 100%;
+  border: 1.5px solid #140e08;
+  border-radius: 4px;
+  padding: 8px 18px;
+  box-shadow: 
+    0 8px 24px rgba(0, 0, 0, 0.75),
+    0 2px 6px rgba(0, 0, 0, 0.5);
+  user-select: none;
+  opacity: 1;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
+}
+
+.vintage-status-dock:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 12px 30px rgba(0, 0, 0, 0.88),
+    0 4px 10px rgba(0, 0, 0, 0.6);
+}
+
+.status-grid {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.status-col {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  transition: transform 0.2s ease;
+}
+
+.status-col:hover {
+  transform: scale(1.04);
+}
+
+.status-icon {
+  display: flex;
+  align-items: center;
+  opacity: 1;
+}
+
+.status-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.status-label {
+  font-size: 0.70rem;
+  font-weight: 800;
+  color: #050302;
+  letter-spacing: 0.9px;
+  font-family: 'Courier Prime', monospace;
+  margin-bottom: 2px;
+  text-shadow: none;
+}
+
+.status-val {
+  font-family: 'Special Elite', 'Courier Prime', monospace;
+  font-size: 0.98rem;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  color: #050302;
+  text-shadow: none;
+}
+
+.status-val.red-text {
+  color: #721212; /* Deep bold maroon */
+  text-shadow: none;
+}
+
+.status-val.green-text {
+  color: #114c1e; /* Deep bold dark green */
+  text-shadow: none;
+  position: relative;
+  animation: greenBeaconPulse 2s infinite alternate;
+}
+
+@keyframes greenBeaconPulse {
+  0% { opacity: 0.85; }
+  100% { opacity: 1; text-shadow: 0 0 6px rgba(25, 120, 45, 0.5); }
+}
+
+.status-divider-line {
+  width: 1.5px;
+  height: 26px;
+  background: #140e08;
+}
+
+.status-section-divider {
+  width: 1.5px;
+  height: 36px;
+  background: #140e08;
+  margin: 0 16px;
+}
+
+.meta-timing-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3px;
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.76rem;
+  font-weight: 800;
+  color: #050302;
+  line-height: 1.4;
+  letter-spacing: 0.6px;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  text-shadow: none;
+}
+
+.pulse-pop {
+  animation: pulsePop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes pulsePop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.35); color: #ff3333; }
+  100% { transform: scale(1); }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   CINEMATIC VIDEO LOADING ANIMATION OVERLAY
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── Cinematic Intermittent Transition Veil ──────────────── */
+.intermittent-noir-veil {
+  position: fixed;
+  inset: 0;
+  background: 
+    radial-gradient(ellipse 65% 55% at 50% 48%, rgba(255, 210, 125, 0.3) 0%, rgba(35, 22, 12, 0.92) 58%, #050302 100%),
+    radial-gradient(circle at 20% 50%, rgba(220, 130, 40, 0.15) 0%, transparent 60%);
+  z-index: 99998;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.intermittent-noir-veil.active {
+  opacity: 1;
+}
+
+.intermittent-status-badge {
+  background-image: 
+    linear-gradient(rgba(20, 14, 8, 0.08), rgba(20, 14, 8, 0.2)),
+    url('/static/cardboard_manila_texture.png');
+  background-size: cover;
+  border: 1px solid rgba(139, 30, 30, 0.7);
+  color: #1e1308;
+  font-family: 'Special Elite', monospace;
+  font-size: 0.92rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  padding: 12px 28px;
+  border-radius: 4px;
+  box-shadow: 
+    0 18px 45px rgba(0, 0, 0, 0.9),
+    inset 0 0 16px rgba(50, 30, 15, 0.35);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transform: scale(0.92);
+  animation: badgePopBreath 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes badgePopBreath {
+  0% { transform: scale(0.85); opacity: 0; filter: blur(6px); }
+  50% { transform: scale(1.03); opacity: 1; filter: blur(0px); }
+  100% { transform: scale(1); opacity: 1; filter: blur(0px); }
+}
+
+/* ── Staged Arena Elements Entrance Animation ─────────────── */
+body:not(.site-revealed) .brand-blood-header,
+body:not(.site-revealed) .top-right-badge-container,
+body:not(.site-revealed) .dossier-pages-spread,
+body:not(.site-revealed) .desk-wing-left {
+  opacity: 0;
+  transform: translateY(18px) scale(0.985);
+  filter: blur(6px);
+  pointer-events: none;
+}
+
+body.site-revealed .brand-blood-header {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0px);
+  transition: 
+    opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.15s, 
+    transform 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.15s, 
+    filter 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.15s;
+}
+
+body.site-revealed .top-right-badge-container {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0px);
+  transition: 
+    opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.25s, 
+    transform 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.25s, 
+    filter 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.25s;
+}
+
+body.site-revealed .dossier-pages-spread {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0px);
+  transition: 
+    opacity 1.3s cubic-bezier(0.16, 1, 0.3, 1) 0.3s, 
+    transform 1.3s cubic-bezier(0.16, 1, 0.3, 1) 0.3s, 
+    filter 1.3s cubic-bezier(0.16, 1, 0.3, 1) 0.3s;
+}
+
+body.site-revealed .desk-wing-left {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0px);
+  transition: 
+    opacity 1.3s cubic-bezier(0.16, 1, 0.3, 1) 0.4s, 
+    transform 1.3s cubic-bezier(0.16, 1, 0.3, 1) 0.4s, 
+    filter 1.3s cubic-bezier(0.16, 1, 0.3, 1) 0.4s;
+}
+
+.detective-docu-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #080503;
+  overflow: hidden;
+  opacity: 1;
+  transform: scale(1);
+  filter: blur(0px) brightness(1);
+  transition: 
+    opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), 
+    transform 1.2s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+}
+
+.detective-docu-overlay.fade-out {
+  opacity: 0;
+  transform: scale(1.06);
+  filter: blur(10px) brightness(0.65);
+  pointer-events: none;
+}
+
+/* Warm Amber / Noir Desk Vignette & Letterbox Mask */
+.detective-docu-overlay::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(ellipse at center, rgba(180, 110, 50, 0.04) 0%, transparent 40%, rgba(6, 4, 2, 0.82) 76%, #020101 100%),
+    linear-gradient(to bottom, rgba(3, 2, 1, 0.98) 0%, transparent 8%, transparent 92%, rgba(3, 2, 1, 0.98) 100%),
+    linear-gradient(to right, rgba(3, 2, 1, 0.95) 0%, transparent 6%, transparent 94%, rgba(3, 2, 1, 0.95) 100%);
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* Crop and scale video outward to push all edge/corner watermarks completely out of bounds */
+.loading-video-player {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: #020101;
+  transform: scale(1.32);
+  transform-origin: center center;
+  filter: contrast(1.12) sepia(0.22) brightness(0.86);
+}
+
+/* ── Video Overlay Loading Bar (Exact Kraft Parchment Texture) ── */
+.video-loading-bar-container {
+  position: absolute;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 380px;
+  max-width: 86vw;
+  background-image: 
+    linear-gradient(rgba(20, 14, 8, 0.06), rgba(20, 14, 8, 0.16)),
+    url('/static/cardboard_manila_texture.png');
+  background-size: cover, cover;
+  background-position: center, center;
+  background-repeat: no-repeat;
+  border: 1px solid rgba(75, 55, 35, 0.65);
+  border-radius: 4px;
+  padding: 9px 16px 11px 16px;
+  box-shadow: 
+    0 14px 34px rgba(0, 0, 0, 0.85),
+    0 2px 6px rgba(0, 0, 0, 0.6),
+    inset 0 0 16px rgba(50, 30, 15, 0.35);
+  z-index: 25;
+  user-select: none;
+  pointer-events: none;
+}
+
+.video-loading-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+  border-bottom: 1px dashed rgba(60, 40, 25, 0.45);
+  padding-bottom: 4px;
+}
+
+.video-loading-label {
+  font-family: 'Special Elite', monospace;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #1e1308;
+  letter-spacing: 1.2px;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+.video-loading-pct {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #8b1e1e;
+  letter-spacing: 1px;
+}
+
+.video-loading-track {
+  width: 100%;
+  height: 8px;
+  background: rgba(30, 20, 10, 0.38);
+  border: 1px solid rgba(60, 40, 25, 0.6);
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+}
+
+.video-loading-fill {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, #8b1e1e 0%, #b82828 65%, #dc2626 100%);
+  box-shadow: 0 0 8px rgba(184, 40, 40, 0.75);
+  border-radius: 1px;
+  transition: width 0.08s linear;
+}
+
+.video-skip-control {
+  position: absolute;
+  bottom: 24px;
+  right: 28px;
+  z-index: 20;
+}
+
+.btn-docu-skip {
+  background-image: 
+    linear-gradient(rgba(20, 14, 8, 0.06), rgba(20, 14, 8, 0.16)),
+    url('/static/cardboard_manila_texture.png');
+  background-size: cover;
+  border: 1px solid rgba(75, 55, 35, 0.65);
+  color: #1e1308;
+  font-family: 'Special Elite', monospace;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  padding: 9px 18px;
+  border-radius: 4px;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.8), inset 0 0 10px rgba(50, 30, 15, 0.25);
+  transition: all 0.2s ease;
+}
+
+.btn-docu-skip:hover {
+  background-image: 
+    linear-gradient(rgba(139, 30, 30, 0.85), rgba(100, 20, 20, 0.92)),
+    url('/static/cardboard_manila_texture.png');
+  color: #fff;
+  border-color: #8b1e1e;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(139, 30, 30, 0.65);
+}
+
+/* ── Responsive Media Queries ─────────────────────────────── */
+@media (max-width: 1400px) {
+  .detective-workspace-stage {
+    gap: 16px;
+    padding: 0 12px;
+  }
+  .desk-wing {
+    width: 220px;
+  }
+}
+
+@media (max-width: 1150px) {
+  .detective-workspace-stage {
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    margin-top: 30px;
+  }
+  .desk-wing {
+    width: 100%;
+    max-width: 900px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    transform: none !important;
+  }
+  .desk-wing > * {
+    flex: 1 1 260px;
+  }
+}
+
+@media (max-width: 900px) {
+  body {
+    flex-direction: column;
+    padding-top: 20px;
+    padding-bottom: 70px;
+  }
+  .brand-blood-header {
+    position: static;
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: center;
+  }
+  .top-right-badge-container {
+    position: static;
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: center;
+  }
+  .brand-main-title {
+    font-size: 1.8rem;
+    letter-spacing: 2px;
+  }
+  .brand-subtitle {
+    font-size: 0.82rem;
+    letter-spacing: 1.5px;
+  }
+  .dossier-pages-spread {
+    flex-direction: column;
+    padding: 20px 16px;
+    background-size: cover;
+  }
+  .left-sheet, .right-sheet {
+    padding: 10px 12px;
+  }
+  .desk-wing {
+    flex-direction: column;
+  }
+  .desk-wing > * {
+    flex: 1 1 100%;
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "venvPath": ".",
+  "venv": ".venv",
+  "extraPaths": [
+    ".venv/lib/python3.14/site-packages"
+  ],
+  "executionEnvironments": [
+    {
+      "root": ".",
+      "pythonVersion": "3.14",
+      "extraPaths": [
+        ".venv/lib/python3.14/site-packages"
+      ]
+    }
+  ]
+}
